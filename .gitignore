@@ -21,6 +21,9 @@
 go.work
 
 .idea
+project/db-data
+
 coverage.out
 database.yml
 /broker-service/brokerApp
+/authentication-service/authApp
