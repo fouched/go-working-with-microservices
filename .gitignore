@@ -27,3 +27,4 @@ coverage.out
 database.yml
 /broker-service/brokerApp
 /authentication-service/authApp
+/logger-service/loggerServiceApp
