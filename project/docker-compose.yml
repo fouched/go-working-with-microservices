@@ -52,6 +52,7 @@ services:
     image: 'mongo:8.0-noble'
     ports:
       - "27017:27017"
+    restart: always
     environment:
       MONGO_INITDB_DATABASE: logs
       MONGO_INITDB_ROOT_USERNAME: admin
@@ -59,3 +60,8 @@ services:
     volumes:
       - ./db-data/mongo/:/data/db
 
+  mailhog:
+    image: 'mailhog/mailhog:latest'
+    ports:
+      - "1025:1025"
+      - "8025:8025"
