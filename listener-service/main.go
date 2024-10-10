@@ -1,24 +1,17 @@
 package main
 
+// use an alias for convenience
 import (
 	"fmt"
+	amqp "github.com/rabbitmq/amqp091-go"
+	"listener/event"
 	"log"
 	"math"
-	"net/http"
 	"os"
 	"time"
-
-	amqp "github.com/rabbitmq/amqp091-go"
 )
 
-const webPort = "80"
-
-type Config struct{
-	Rabbit *amqp.Connection
-}
-
 func main() {
-
 	// connect to rabbitmq
 	rabbitConn, err := connect()
 	if err != nil {
@@ -27,23 +20,22 @@ func main() {
 	}
 	defer rabbitConn.Close()
 
-	app := Config{
-		Rabbit: rabbitConn,
-	}
+	// listen for messages
+	log.Println("Listing for messages...")
 
-	log.Printf("Starting broker service on port %s\n", webPort)
-
-	// define http server
-	srv := &http.Server{
-		Addr: fmt.Sprintf(":%s", webPort),
-		Handler: app.routes(),
-	}
-	
-	// start server
-	err = srv.ListenAndServe()
+	// create consumer
+	consumer, err := event.NewConsumer(rabbitConn)
 	if err != nil {
-		log.Panic(err)
+		panic(err)
 	}
+
+	// watch queue and consume events
+	err = consumer.Listen([]string{"log.INFO", "log.WARNING", "log.ERROR"})
+
+	if err != nil {
+		log.Println(err)
+	}
+
 }
 
 func connect() (*amqp.Connection, error) {
