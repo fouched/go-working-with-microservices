@@ -1,5 +1,6 @@
 SHELL=cmd.exe
-FRONT_END_BINARY=frontApp.exe
+FRONT_END_BINARY=frontApp
+FRONT_END_BINARY_WIN=frontApp.exe
 BROKER_BINARY=brokerApp
 AUTH_BINARY=authApp
 LOGGER_BINARY=loggerServiceApp
@@ -59,16 +60,22 @@ build_auth:
 ## build_front: builds the frone end binary
 build_front:
 	@echo Building front end binary...
-	chdir ..\front-end && set CGO_ENABLED=0&& set GOOS=windows&& go build -o ${FRONT_END_BINARY} ./cmd/web
+	chdir ..\front-end && set CGO_ENABLED=0&& set GOOS=linux&& go build -o ${FRONT_END_BINARY} ./cmd/web
+	@echo Done!
+
+## build_front_win: builds the frone end binary for windows
+build_front_win:
+	@echo Building windows front end binary...
+	chdir ..\front-end && set CGO_ENABLED=0&& set GOOS=windows&& go build -o ${FRONT_END_BINARY_WIN} ./cmd/web
 	@echo Done!
 
 ## start: starts the front end
 start: build_front
 	@echo Starting front end
-	chdir ..\front-end && start /B ${FRONT_END_BINARY} &
+	chdir ..\front-end && start /B ${FRONT_END_BINARY_WIN} &
 
 ## stop: stop the front end
 stop:
 	@echo Stopping front end...
-	@taskkill /IM "${FRONT_END_BINARY}" /F
+	@taskkill /IM "${FRONT_END_BINARY_WIN}" /F
 	@echo "Stopped front end!"

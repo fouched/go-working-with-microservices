@@ -30,3 +30,4 @@ database.yml
 /logger-service/loggerServiceApp
 /mail-service/mailServiceApp
 /listener-service/listenerApp
+/front-end/frontApp
