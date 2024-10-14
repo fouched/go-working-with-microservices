@@ -20,6 +20,7 @@ var counts int64
 
 type Config struct {
 	Repo data.Repository
+	Client *http.Client
 }
 
 func main() {
@@ -31,9 +32,9 @@ func main() {
 		log.Panic("Cannot connect to Postgres!")
 	}
 
-	// set up config
+	// set up config - we are explicitly specifying the client since it is mocked for testing
 	app := Config{
-
+		Client: &http.Client{},
 	}
 
 	srv := &http.Server{
