@@ -97,7 +97,7 @@ func handlePayload(payload Payload) {
 	case "auth":
 		// authenticate
 
-	// add more cases are required
+	// add more cases as required
 
 	default:
 		err := logEvent(payload)
